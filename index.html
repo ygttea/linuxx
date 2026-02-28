@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Link - Quax Tarzı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ffffff;
+            --accent-color: #00f2ea; /* Kuzey Işıkları için Turkuaz Vurgu */
+            --glass-bg: rgba(20, 30, 48, 0.65); /* Daha koyu, gece mavisi tonu */
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --blur-amount: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: var(--primary-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Arka Plan Görseli */
+        #bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            transform: scale(1.1); /* Hafif zoom */
+            transition: transform 0.1s ease-out;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* Işıkların parlaması için karartmayı azalttım */
+            z-index: -1;
+        }
+
+        /* Kart Tasarımı */
+        .card {
+            width: 400px;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 25px rgba(0, 242, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-wrapper:hover .profile-img { transform: scale(1.05); }
+
+        .status-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background-color: #10b981; /* Online Yeşil */
+            border: 3px solid #1e1e1e;
+            border-radius: 50%;
+        }
+
+        .username {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .bio-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* Müzik Widget */
+        .music-widget {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
+        }
+        
+        .music-widget:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .album-art {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            animation: spin 8s linear infinite;
+            animation-play-state: paused;
+        }
+        
+        .album-art.playing { animation-play-state: running; }
+
+        .track-info { text-align: left; flex: 1; overflow: hidden; }
+
+        .track-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .artist-name {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .music-controls i {
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            transition: color 0.2s;
+            padding: 5px;
+        }
+        
+        .music-controls i:hover { color: var(--accent-color); }
+
+        /* Sosyal Medya */
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        /* Ses Kontrolü */
+        .volume-container {
+            position: fixed;
+            bottom: 30px;
+            background: rgba(20, 30, 48, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 20;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80px;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .card { width: 90%; padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <img id="bg-image" src="" alt="Northern Lights">
+    <div class="overlay"></div>
+
+    <div class="card">
+        <div class="profile-wrapper">
+            <img src="" alt="Profile" class="profile-img" id="profile-pic">
+            <div class="status-badge"></div>
+        </div>
+
+        <h1 class="username" id="username"></h1>
+        <p class="bio-text" id="bio"></p>
+
+        <div class="music-widget">
+            <img src="" alt="Album Art" class="album-art" id="album-art">
+            <div class="track-info">
+                <span class="track-name" id="track-name"></span>
+                <span class="artist-name" id="artist-name"></span>
+            </div>
+            <div class="music-controls">
+                <i class="fa-solid fa-play" id="play-btn"></i>
+            </div>
+        </div>
+
+        <div class="social-grid" id="social-container"></div>
+    </div>
+
+    <div class="volume-container">
+        <i class="fa-solid fa-volume-high"></i>
+        <input type="range" id="volume-slider" min="0" max="100" value="40">
+    </div>
+
+    <audio id="audio-player" loop></audio>
+
+    <script>
+        // ==========================================
+        // ⚙️ AYARLAR (BURADAN DEĞİŞTİR)
+        // ==========================================
+        const kullaniciAyarlari = {
+            isim: "Linux",
+            bio: "only linux",
+            
+            // 🌠 Norveç - Kuzey Işıkları (Senin için seçtim)
+            arkaPlanResmi: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=2070&auto=format&fit=crop",
+            
+            // Profil Resmin
+            profilResmi: "https://cdn.discordapp.com/avatars/1305977261454917703/5d680e3ff33e58ef19d6dfd1041119c8.webp?size=1024",
+            
+            // 🎵 Müzik Ayarları
+            muzik: {
+                // Şimdilik telifsiz piyano koydum. Buraya kendi MP3 linkini yapıştır!
+                dosyaLinki: "https://cdn.discordapp.com/attachments/1347886049552240690/1477396409920651435/Elif_Dogan_Bir_Ruya_Gordum_Ask_Tesadufleri_Sever_2_Orijinal_Film_Muzikleri.mp3?ex=69a49c20&is=69a34aa0&hm=d4d845caac6a61c4807cd635be3b4f89f07c127f371e8d4601bb65366adcdf1e&", 
+                
+                sarkiAdi: "Bir Rüya Gördüm",
+                sanatci: "Elif Doğan",
+                // Aşk Tesadüfleri Sever 2 Film Afişi/Kapak
+                kapakResmi: "https://i.ytimg.com/vi/PHvKfw-o0Rk/maxresdefault.jpg"
+            },
+
+            // Sosyal Medya
+            sosyalMedya: [
+                { ikon: "fa-brands fa-discord", link: "https://discord.gg/craftrisehesap", renk: "#5865F2" },
+                { ikon: "fa-brands fa-spotify", link: "#", renk: "#1DB954" },
+                { ikon: "fa-brands fa-instagram", link: "https://www.instagram.com/", renk: "#E1306C" },
+                { ikon: "fa-brands fa-github", link: "https://github.com/ygttea", renk: "#fff" }
+            ]
+        };
+
+        // ==========================================
+        // 🔧 SİSTEM (DOKUNMA)
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            document.title = `${kullaniciAyarlari.isim} | Bio`;
+            document.getElementById("username").textContent = kullaniciAyarlari.isim;
+            document.getElementById("bio").textContent = kullaniciAyarlari.bio;
+            document.getElementById("bg-image").src = kullaniciAyarlari.arkaPlanResmi;
+            document.getElementById("profile-pic").src = kullaniciAyarlari.profilResmi;
+            
+            document.getElementById("track-name").textContent = kullaniciAyarlari.muzik.sarkiAdi;
+            document.getElementById("artist-name").textContent = kullaniciAyarlari.muzik.sanatci;
+            document.getElementById("album-art").src = kullaniciAyarlari.muzik.kapakResmi;
+            
+            const audio = document.getElementById("audio-player");
+            audio.src = kullaniciAyarlari.muzik.dosyaLinki;
+            audio.volume = 0.4;
+
+            const socialContainer = document.getElementById("social-container");
+            kullaniciAyarlari.sosyalMedya.forEach(item => {
+                const link = document.createElement("a");
+                link.href = item.link;
+                link.className = "social-btn";
+                link.target = "_blank";
+                link.innerHTML = `<i class="${item.ikon}"></i>`;
+                link.addEventListener("mouseenter", () => {
+                    link.style.background = item.renk;
+                    link.style.boxShadow = `0 0 15px ${item.renk}`;
+                });
+                link.addEventListener("mouseleave", () => {
+                    link.style.background = "rgba(255, 255, 255, 0.05)";
+                    link.style.boxShadow = "none";
+                });
+                socialContainer.appendChild(link);
+            });
+
+            const playBtn = document.getElementById("play-btn");
+            const albumArt = document.getElementById("album-art");
+            let isPlaying = false;
+
+            playBtn.addEventListener("click", () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playBtn.classList.replace("fa-pause", "fa-play");
+                    albumArt.classList.remove("playing");
+                } else {
+                    audio.play().catch(e => console.log("Otomatik oynatma engellendi, tıklama gerekli."));
+                    playBtn.classList.replace("fa-play", "fa-pause");
+                    albumArt.classList.add("playing");
+                }
+                isPlaying = !isPlaying;
+            });
+
+            const volumeSlider = document.getElementById("volume-slider");
+            volumeSlider.addEventListener("input", (e) => audio.volume = e.target.value / 100);
+
+            // Paralaks Efekti
+            document.addEventListener("mousemove", (e) => {
+                const x = (window.innerWidth - e.pageX * 2) / 100;
+                const y = (window.innerHeight - e.pageY * 2) / 100;
+                document.getElementById("bg-image").style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
