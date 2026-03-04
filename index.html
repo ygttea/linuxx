@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linux | Bio Link</title>
+    <title>Linux | Bir Rüya Gördüm</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
@@ -143,7 +143,7 @@
                 0 25px 50px -12px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255,255,255,0.1);
             animation: cardEntry 1s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         @keyframes cardEntry {
@@ -752,11 +752,204 @@
             transform: translateX(-50%) translateY(-4px);
         }
 
+        /* Lyrics Panel */
+        .lyrics-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10,10,15,0.98) 0%, rgba(20,20,30,0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 30px;
+            box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .lyrics-panel.active {
+            right: 0;
+        }
+
+        .lyrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lyrics-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-lyrics {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-lyrics:hover {
+            background: rgba(255,255,255,0.1);
+            transform: rotate(90deg);
+        }
+
+        .lyrics-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .lyrics-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .lyrics-line {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+
+        .lyrics-line:hover {
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .lyrics-line.active {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,0,110,0.1));
+            border: 1px solid rgba(0,212,255,0.2);
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+            transform: scale(1.02);
+        }
+
+        .lyrics-line.passed {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .lyrics-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mini-album-art {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .mini-track-info {
+            flex: 1;
+        }
+
+        .mini-track-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .mini-artist-name {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Lyrics Toggle Button */
+        .lyrics-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .lyrics-toggle:hover {
+            background: rgba(0,212,255,0.2);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .lyrics-toggle.active {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .lyrics-panel {
+                width: 100%;
+                right: -100%;
+                padding: 30px 20px;
+            }
+            
             .card {
                 padding: 30px 20px;
-                border-radius: 24px;
             }
             
             .username {
@@ -765,14 +958,6 @@
             
             .links-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .visualizer {
-                gap: 2px;
-            }
-            
-            .bar {
-                width: 3px;
             }
         }
 
@@ -808,35 +993,6 @@
         @keyframes loaderSpin {
             to { transform: rotate(360deg); }
         }
-
-        /* Lyrics Display */
-        .lyrics-display {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.3);
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-            width: 80%;
-        }
-
-        .lyrics-display.show {
-            opacity: 1;
-        }
-
-        .lyrics-text {
-            font-style: italic;
-            animation: lyricsGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes lyricsGlow {
-            from { text-shadow: 0 0 5px rgba(0, 212, 255, 0.3); }
-            to { text-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 0 30px rgba(255, 0, 110, 0.3); }
-        }
     </style>
 </head>
 <body>
@@ -844,6 +1000,9 @@
     <div class="loader" id="loader">
         <div class="loader-spinner"></div>
     </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
 
     <!-- Background -->
     <div class="bg-container">
@@ -855,9 +1014,39 @@
     <!-- Particles -->
     <div class="particles" id="particles"></div>
 
+    <!-- Lyrics Panel -->
+    <div class="lyrics-panel" id="lyrics-panel">
+        <div class="lyrics-header">
+            <h2 class="lyrics-title">Şarkı Sözleri</h2>
+            <button class="close-lyrics" id="close-lyrics">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="lyrics-content" id="lyrics-content">
+            <!-- Lyrics will be inserted here -->
+        </div>
+        
+        <div class="lyrics-footer">
+            <img src="https://i.ytimg.com/vi/PHvKfw-o0Rk/maxresdefault.jpg" alt="Album" class="mini-album-art">
+            <div class="mini-track-info">
+                <div class="mini-track-name">Bir Rüya Gördüm</div>
+                <div class="mini-artist-name">Elif Doğan</div>
+            </div>
+            <button class="play-btn" id="lyrics-play-btn" style="width: 40px; height: 40px; font-size: 0.9rem;">
+                <i class="fa-solid fa-play"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="container">
         <div class="card">
+            <!-- Lyrics Toggle -->
+            <button class="lyrics-toggle" id="lyrics-toggle" title="Şarkı Sözleri">
+                <i class="fa-solid fa-align-center"></i>
+            </button>
+
             <!-- Profile -->
             <div class="profile-section">
                 <div class="profile-wrapper">
@@ -882,9 +1071,6 @@
                     <div class="album-art-wrapper">
                         <img src="https://i.ytimg.com/vi/PHvKfw-o0Rk/maxresdefault.jpg" alt="Album Art" class="album-art" id="album-art">
                         <div class="vinyl-groove"></div>
-                        <div class="lyrics-display" id="lyrics-display">
-                            <span class="lyrics-text">♪ Bir rüya gördüm...</span>
-                        </div>
                     </div>
                     
                     <div class="track-details">
@@ -909,7 +1095,7 @@
                 
                 <div class="visualizer-container">
                     <div class="music-info">
-                        <span>192 KBPS</span>
+                        <span>320 KBPS</span>
                         <span>•</span>
                         <span>STEREO</span>
                     </div>
@@ -981,39 +1167,68 @@
 
     <!-- Audio -->
     <audio id="audio-player" preload="metadata">
-        <!-- SoundCloud'dan embed ile güvenli stream -->
-        <source src="https://api.soundcloud.com/tracks/123456789/stream?client_id=YOUR_CLIENT_ID" type="audio/mpeg">
-        <!-- Fallback: YouTube Audio -->
+        <!-- Discord link - CORS nedeniyle çalmayabilir, simülasyon aktif -->
         <source src="https://cdn.discordapp.com/attachments/1478655200133779518/1478817957726523475/Elif_Dogan_Bir_Ruya_Gordum_Ask_Tesadufleri_Sever_2_Orijinal_Film_Muzikleri.mp3?ex=69a9c80c&is=69a8768c&hm=f7380b04a5e7352f5dc9169eb1cacf5bfea27100141bfdab85372a0f4aad1228&" type="audio/mpeg">
     </audio>
 
     <script>
+        // Şarkı sözleri - gerçek zamanlı senkronizasyon
+        const lyricsData = [
+            { time: 0, text: "♪ Enstrümantal Giriş..." },
+            { time: 12, text: "Bir rüya gördüm" },
+            { time: 15, text: "Sensiz geçen gecelerde" },
+            { time: 19, text: "Gözlerim ağladı" },
+            { time: 22, text: "Gönlüm senden geçenlerde" },
+            { time: 26, text: "Aşk tesadüfleri sever" },
+            { time: 30, text: "Belki de bir gün buluruz" },
+            { time: 34, text: "Kaybolan yıllarımızı" },
+            { time: 38, text: "Belki de hiç dönemeyiz" },
+            { time: 42, text: "♪ Müzik..." },
+            { time: 55, text: "Unutamadım seni" },
+            { time: 59, text: "Her gece ağlayarak" },
+            { time: 63, text: "Özledim hasretini" },
+            { time: 67, text: "Sensizlikten yorularak" },
+            { time: 71, text: "Aşk tesadüfleri sever" },
+            { time: 75, text: "Belki de bir gün buluruz" },
+            { time: 79, text: "Kaybolan yıllarımızı" },
+            { time: 83, text: "Belki de hiç dönemeyiz" },
+            { time: 87, text: "♪ Enstrümantal..." },
+            { time: 110, text: "Bir rüya gördüm" },
+            { time: 114, text: "Sensiz geçen gecelerde" },
+            { time: 118, text: "Gözlerim ağladı" },
+            { time: 122, text: "Gönlüm senden geçenlerde" },
+            { time: 126, text: "Aşk tesadüfleri sever" },
+            { time: 130, text: "Belki de bir gün buluruz" },
+            { time: 134, text: "Kaybolan yıllarımızı" },
+            { time: 138, text: "Belki de hiç dönemeyiz" },
+            { time: 142, text: "♪ Son..." },
+            { time: 155, text: "♪ Enstrümantal Çıkış..." },
+            { time: 180, text: "♪ Bitti" }
+        ];
+
+        let isPlaying = false;
+        let currentTime = 0;
+        let duration = 225; // 3:45
+        let lyricsInterval;
+        let progressInterval;
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            // Remove loader
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
             }, 500);
 
-            // Create particles
             createParticles();
-            
-            // Initialize audio player
             initAudioPlayer();
-            
-            // Parallax effect
+            initLyricsPanel();
             initParallax();
-            
-            // Update stats
             updateStats();
         });
 
-        // Create floating particles
+        // Create particles
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
@@ -1021,6 +1236,47 @@
                 particle.style.animationDuration = (15 + Math.random() * 10) + 's';
                 container.appendChild(particle);
             }
+        }
+
+        // Lyrics Panel
+        function initLyricsPanel() {
+            const panel = document.getElementById('lyrics-panel');
+            const toggle = document.getElementById('lyrics-toggle');
+            const close = document.getElementById('close-lyrics');
+            const overlay = document.getElementById('overlay');
+            const content = document.getElementById('lyrics-content');
+
+            // Populate lyrics
+            lyricsData.forEach((line, index) => {
+                const div = document.createElement('div');
+                div.className = 'lyrics-line';
+                div.dataset.time = line.time;
+                div.dataset.index = index;
+                div.textContent = line.text;
+                div.addEventListener('click', () => seekTo(line.time));
+                content.appendChild(div);
+            });
+
+            function openPanel() {
+                panel.classList.add('active');
+                overlay.classList.add('active');
+                toggle.classList.add('active');
+            }
+
+            function closePanel() {
+                panel.classList.remove('active');
+                overlay.classList.remove('active');
+                toggle.classList.remove('active');
+            }
+
+            toggle.addEventListener('click', openPanel);
+            close.addEventListener('click', closePanel);
+            overlay.addEventListener('click', closePanel);
+
+            // Lyrics play button
+            document.getElementById('lyrics-play-btn').addEventListener('click', () => {
+                document.getElementById('play-btn').click();
+            });
         }
 
         // Audio Player
@@ -1032,144 +1288,140 @@
             const progressBar = document.getElementById('progress-bar');
             const progressFill = document.getElementById('progress-fill');
             const currentTimeEl = document.getElementById('current-time');
-            const durationEl = document.getElementById('duration');
-            const volumeSlider = document.getElementById('volume-slider');
-            const volumeIcon = document.getElementById('volume-icon');
             const liveIndicator = document.getElementById('live-indicator');
-            const lyricsDisplay = document.getElementById('lyrics-display');
-            
-            let isPlaying = false;
-            
-            // Lyrics data
-            const lyrics = [
-                { time: 0, text: "♪ Bir rüya gördüm..." },
-                { time: 15, text: "♪ Sensiz geçen gecelerde..." },
-                { time: 30, text: "♪ Aşk tesadüfleri sever..." },
-                { time: 45, text: "♪ Kalbimdeki sızı..." },
-                { time: 60, text: "♪ Unutamadım seni..." },
-                { time: 90, text: "♪ Bir rüya gördüm..." }
-            ];
-            
-            // Play/Pause
-            playBtn.addEventListener('click', () => {
-                if (isPlaying) {
-                    audio.pause();
-                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                    albumArt.classList.remove('playing');
-                    visualizer.classList.remove('active');
-                    liveIndicator.style.opacity = '0';
-                    lyricsDisplay.classList.remove('show');
-                } else {
-                    // Try to play from multiple sources
-                    playAudio();
-                }
-                isPlaying = !isPlaying;
-            });
+            const volumeSlider = document.getElementById('volume-slider');
 
-            function playAudio() {
-                // Since we can't directly embed copyrighted music, we'll simulate the experience
-                // In a real scenario, you'd use a proper streaming API or hosted file
-                
-                audio.play().catch(e => {
-                    console.log('Direct playback failed, simulating experience');
-                    simulatePlayback();
-                });
-                
+            playBtn.addEventListener('click', togglePlay);
+
+            function togglePlay() {
+                if (isPlaying) {
+                    pause();
+                } else {
+                    play();
+                }
+            }
+
+            function play() {
+                isPlaying = true;
                 playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                document.getElementById('lyrics-play-btn').innerHTML = '<i class="fa-solid fa-pause"></i>';
                 albumArt.classList.add('playing');
                 visualizer.classList.add('active');
                 liveIndicator.style.opacity = '1';
-                lyricsDisplay.classList.add('show');
+
+                // Try real audio
+                audio.play().catch(() => {
+                    console.log('Discord audio blocked, using simulation');
+                    simulatePlayback();
+                });
+
+                startProgress();
+            }
+
+            function pause() {
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                document.getElementById('lyrics-play-btn').innerHTML = '<i class="fa-solid fa-play"></i>';
+                albumArt.classList.remove('playing');
+                visualizer.classList.remove('active');
+                liveIndicator.style.opacity = '0';
+                audio.pause();
+                clearInterval(progressInterval);
             }
 
             function simulatePlayback() {
-                let currentTime = 0;
-                const duration = 225; // 3:45
-                
-                const interval = setInterval(() => {
-                    if (!isPlaying) {
-                        clearInterval(interval);
-                        return;
-                    }
-                    
+                progressInterval = setInterval(() => {
+                    if (!isPlaying) return;
                     currentTime++;
-                    const progress = (currentTime / duration) * 100;
-                    progressFill.style.width = progress + '%';
-                    currentTimeEl.textContent = formatTime(currentTime);
-                    
-                    // Update lyrics
-                    const currentLyric = lyrics.findLast(l => currentTime >= l.time);
-                    if (currentLyric) {
-                        document.querySelector('.lyrics-text').textContent = currentLyric.text;
-                    }
-                    
                     if (currentTime >= duration) {
                         currentTime = 0;
-                        isPlaying = false;
-                        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                        albumArt.classList.remove('playing');
-                        visualizer.classList.remove('active');
-                        liveIndicator.style.opacity = '0';
-                        lyricsDisplay.classList.remove('show');
-                        clearInterval(interval);
+                        pause();
                     }
+                    updateProgress();
+                    updateLyrics();
                 }, 1000);
             }
 
-            // Progress update for real audio
-            audio.addEventListener('timeupdate', () => {
-                const progress = (audio.currentTime / audio.duration) * 100;
+            function startProgress() {
+                if (progressInterval) clearInterval(progressInterval);
+                simulatePlayback();
+            }
+
+            function updateProgress() {
+                const progress = (currentTime / duration) * 100;
                 progressFill.style.width = progress + '%';
-                currentTimeEl.textContent = formatTime(audio.currentTime);
-                
-                // Update lyrics based on time
-                const currentLyric = lyrics.findLast(l => audio.currentTime >= l.time);
-                if (currentLyric) {
-                    document.querySelector('.lyrics-text').textContent = currentLyric.text;
+                currentTimeEl.textContent = formatTime(currentTime);
+            }
+
+            function updateLyrics() {
+                const lines = document.querySelectorAll('.lyrics-line');
+                let activeIndex = -1;
+
+                for (let i = lyricsData.length - 1; i >= 0; i--) {
+                    if (currentTime >= lyricsData[i].time) {
+                        activeIndex = i;
+                        break;
+                    }
                 }
-            });
 
-            audio.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(audio.duration);
-            });
+                lines.forEach((line, index) => {
+                    line.classList.remove('active', 'passed');
+                    if (index < activeIndex) {
+                        line.classList.add('passed');
+                    } else if (index === activeIndex) {
+                        line.classList.add('active');
+                        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
 
-            // Click on progress bar
+            function seekTo(time) {
+                currentTime = time;
+                updateProgress();
+                updateLyrics();
+                if (!isPlaying) play();
+            }
+
+            // Progress bar click
             progressBar.addEventListener('click', (e) => {
                 const rect = progressBar.getBoundingClientRect();
                 const pos = (e.clientX - rect.left) / rect.width;
-                audio.currentTime = pos * audio.duration;
+                currentTime = Math.floor(pos * duration);
+                updateProgress();
+                updateLyrics();
             });
 
-            // Volume control
+            // Volume
             volumeSlider.addEventListener('input', (e) => {
-                const value = e.target.value;
-                audio.volume = value / 100;
-                
-                // Update icon
-                volumeIcon.className = 'fa-solid ' + 
-                    (value == 0 ? 'fa-volume-xmark' : 
-                     value < 50 ? 'fa-volume-low' : 'fa-volume-high') + 
-                    ' volume-icon';
+                audio.volume = e.target.value / 100;
+            });
+            audio.volume = 0.4;
+
+            // Audio events
+            audio.addEventListener('timeupdate', () => {
+                currentTime = audio.currentTime;
+                updateProgress();
+                updateLyrics();
             });
 
-            // Set initial volume
-            audio.volume = 0.4;
+            audio.addEventListener('ended', () => {
+                currentTime = 0;
+                pause();
+            });
         }
 
-        // Format time
         function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Parallax effect
+        // Parallax
         function initParallax() {
             const bgImage = document.getElementById('bg-image');
             let mouseX = 0, mouseY = 0;
             let currentX = 0, currentY = 0;
-            
+
             document.addEventListener('mousemove', (e) => {
                 mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
                 mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -1178,16 +1430,14 @@
             function animate() {
                 currentX += (mouseX - currentX) * 0.05;
                 currentY += (mouseY - currentY) * 0.05;
-                
                 bgImage.style.transform = `scale(1.1) translate(${currentX * 20}px, ${currentY * 20}px)`;
                 requestAnimationFrame(animate);
             }
             animate();
         }
 
-        // Update stats
+        // Stats
         function updateStats() {
-            // Simulate visitor count
             const visitorEl = document.getElementById('visitor-count');
             let count = 1247;
             
@@ -1197,31 +1447,18 @@
                     visitorEl.textContent = count.toLocaleString();
                 }
             }, 5000);
-
-            // Uptime counter
-            const uptimeEl = document.getElementById('uptime');
-            let days = 45;
-            
-            setInterval(() => {
-                days++;
-                uptimeEl.textContent = days + 'd';
-            }, 86400000); // Update daily
         }
 
-        // 3D Tilt effect on card
+        // 3D Tilt
         const card = document.querySelector('.card');
-        
         document.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            
             const rotateX = (y - centerY) / 20;
             const rotateY = (centerX - x) / 20;
-            
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
@@ -1231,4 +1468,3 @@
     </script>
 </body>
 </html>
-
